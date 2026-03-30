@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prama - Recruiter Talent Intelligence</title>
+    <link rel="stylesheet" href="/styles.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="blob-c blob-1"></div>
+    <div class="blob-c blob-2"></div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav id="topNav" class="hidden">
+            <div class="nav-brand">Prama <span class="highlight">Intelligence</span></div>
+            <div class="nav-links">
+                <button class="nav-link active" id="navReqsBtn">Requirements</button>
+                <button class="nav-link" id="navSourcingBtn">Sourcing</button>
+                <button class="nav-link" id="navDashboardBtn">Dashboard</button>
+                <button class="nav-link" id="navSettingsBtn">Settings (Company Profile)</button>
+            </div>
+        </nav>
+
+        <header id="mainHeader" class="hidden" style="margin-top: 2rem;">
+            <h1>Recruiter <span class="highlight">Intelligence</span></h1>
+            <p>Define requirements, upload up to 100 resumes, and let AI classify them instantly.</p>
+        </header>
+
+        <!-- Login / Portal Selection -->
+        <section class="glass-card" id="loginCard">
+            <h2 style="text-align: center; margin-bottom: 20px; font-size: 2rem;">Welcome to <span class="highlight">Prama</span></h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Who are you logging in as?</p>
+            
+            <div class="role-select">
+                <div class="role-card" id="roleCandidate">
+                    <h3>Candidate</h3>
+                    <p class="text-sm text-dim">Upload your resume, or let our Autonomous AI Agent fetch your profile from LinkedIn or Indeed.</p>
+                </div>
+                <div class="role-card" id="roleRecruiter">
+                    <h3>Recruiter / Admin</h3>
+                    <p class="text-sm text-dim">Create job requirements and batch-process up to 100 resumes in seconds using Semantic AI.</p>
+                </div>
+            </div>
+
+            <!-- HR Login/Signup Form -->
+            <div id="hrAuthForm" class="hidden" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <h3 id="hrAuthTitle">Recruiter Login</h3>
+                
+                <div class="form-group hidden" id="hrNameGroup" style="margin-top: 15px;">
+                    <label>Full Name</label>
+                    <input type="text" id="hrName" placeholder="e.g. Jane Doe" class="input-field">
+                </div>
+                <div class="form-group hidden" id="hrCompanyGroup">
+                    <label>Company Name</label>
+                    <input type="text" id="hrCompany" placeholder="e.g. Acme Corp" class="input-field">
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Email Address</label>
+                    <input type="email" id="hrEmail" placeholder="e.g. jane@acme.com" class="input-field">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="hrPassword" placeholder="• • • • • •" class="input-field">
+                </div>
+                
+                <button class="primary-btn" id="hrLoginBtn">Login</button>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="nav-link" id="toggleSignupBtn" style="font-size: 0.85rem;">Need an account? Sign Up</button>
+                </div>
+            </div>
+
+            <!-- Candidate Login Form (Hidden by default) -->
+            <div id="candidateForm" class="hidden" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <h3>Candidate Portal</h3>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Full Name</label>
+                    <input type="text" id="candName" placeholder="e.g. John Doe" class="input-field">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="candEmail" placeholder="e.g. john@example.com" class="input-field">
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button class="primary-btn" id="candUploadBtn" style="flex: 1;">Upload Resume File</button>
+                    <button class="primary-btn" id="candAIFetchBtn" style="flex: 1; background: linear-gradient(135deg, #10b981, #059669);">Autonomous AI Fetch</button>
+                </div>
+                <input type="file" id="candFileInput" accept=".pdf,.docx,.txt" hidden>
+            </div>
+        </section>
+
+        <main id="mainApp" class="hidden">
+            <!-- Stage 0: Jobs Dashboard -->
+            <section class="glass-card section-step hidden" id="step0Card">
+                <div class="section-badge" style="background: linear-gradient(135deg, #10b981, #059669);">Dashboard</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>My Job Roles</h2>
+                    <button class="primary-btn" id="createNewJobBtn" style="width: auto;">+ Create New Job</button>
+                </div>
+                <div id="jobsList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Job cards appended here -->
+                </div>
+            </section>
+
+            <!-- Stage 1: Job Description -->
+            <section class="glass-card section-step" id="step1Card">
+                <div class="section-badge">Step 1</div>
+                <h2>Job Requirements</h2>
+                <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" id="jobTitle" placeholder="e.g. Senior Software Engineer" class="input-field">
+                </div>
+                <div class="form-group">
+                    <label>Job Title / Description</label>
+                    <textarea id="jobDesc" placeholder="e.g. Minimum 3 years in Python, Cloud Native, React nice to have..." style="height: 80px;"></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Experience Needed (years)</label>
+                        <input type="text" id="reqExp" placeholder="e.g. 0-3" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Languages Known</label>
+                        <input type="text" id="reqLangs" placeholder="e.g. English, Spanish" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Projects Requirement</label>
+                        <input type="text" id="reqProjects" placeholder="e.g. E-commerce website, React Native app" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Type Background</label>
+                        <select id="reqCompanyType" class="input-field" style="background: rgba(0,0,0,0.4); color: white;">
+                            <option value="">Any</option>
+                            <option value="Product">Product Based</option>
+                            <option value="Service">Service Based</option>
+                            <option value="Startup">Startup</option>
+                        </select>
+                    </div>
+                <!-- Added Company Profile Fields -->
+                <div class="form-group" style="margin-top:20px; padding-top:20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="margin-bottom: 10px; color: var(--primary);">Company Context</h3>
+                    <p class="text-sm text-dim" style="margin-bottom: 15px;">Add extra matching context based on your company domains and tech stack.</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label>Company Domain / Industry</label>
+                        <input type="text" id="reqDomain" placeholder="e.g. FinTech, Healthcare" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Primary Tech Stack</label>
+                        <input type="text" id="reqTechStack" placeholder="e.g. AWS, Node.js, React" class="input-field">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="primary-btn" id="proceedToUploadBtn">Proceed to Upload Resumes</button>
+                </div>
+            </section>
+
+            <!-- Stage 2: Batch Uploading -->
+            <section class="glass-card section-step hidden" id="step2Card">
+                <div class="section-badge">Step 2</div>
+                <h2>Upload Resumes</h2>
+                <p>Select multiple resumes to process them automatically through the agents.</p>
+                <div class="drop-zone" id="dropZone">
+                    <div class="upload-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    </div>
+                        <p>Select up to 100 PDF/DOCX files</p>
+                        <input type="file" id="fileInput" accept=".pdf,.docx,.txt" multiple hidden>
+                    </div>
+                    
+                    <div class="status-box hidden" id="statusBox">
+                        <div class="loader" id="loaderSpinner"></div>
+                        <div class="progress-details">
+                            <p id="statusMsg">Uploading files...</p>
+                            <div class="progress-bar-container hidden" id="progressContainer">
+                                <div class="progress-bar-fill" id="progressBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem;">
+                        <button class="primary-btn" id="backToReqBtn" style="background: rgba(255,255,255,0.1); color: white; width: auto;">← Back to Requirements</button>
+                    </div>
+                </section>
+
+            <!-- Stage 3: Categorized Match Results -->
+            <section class="glass-card section-step hidden" id="step3Card">
+                <div class="section-badge">Step 3: Results</div>
+                <div class="results-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2>AI Classification Dashboard</h2>
+                        <p>Resumes analyzed against: <strong id="displayJobTitle"></strong></p>
+                    </div>
+                    <button class="primary-btn" id="exportExcelBtn" style="padding: 10px 16px; font-size: 0.9em; display: flex; align-items: center; gap: 8px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Export to Excel
+                    </button>
+                </div>
+
+                <div class="classification-board">
+                    <!-- Very Good -->
+                    <div class="category-column">
+                        <div class="category-header very-good">
+                            <h3>Very Good Candidates</h3>
+                            <span class="count-badge" id="countVeryGood">0</span>
+                        </div>
+                        <div class="candidate-list" id="listVeryGood"></div>
+                    </div>
+
+                    <!-- Good -->
+                    <div class="category-column">
+                        <div class="category-header good">
+                            <h3>Good Candidates</h3>
+                            <span class="count-badge" id="countGood">0</span>
+                        </div>
+                        <div class="candidate-list" id="listGood"></div>
+                    </div>
+
+                    <!-- Average -->
+                    <div class="category-column">
+                        <div class="category-header average">
+                            <h3>Average Candidates</h3>
+                            <span class="count-badge" id="countAverage">0</span>
+                        </div>
+                        <div class="candidate-list" id="listAverage"></div>
+                    </div>
+
+                    <!-- Rejected -->
+                    <div class="category-column">
+                        <div class="category-header rejected">
+                            <h3>Rejected</h3>
+                            <span class="count-badge" id="countRejected">0</span>
+                        </div>
+                        <div class="candidate-list" id="listRejected"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; display: flex; gap: 15px;">
+                    <button class="primary-btn" id="backToUploadFromDashBtn" style="background: rgba(255,255,255,0.1); color: white; width: auto;">← Back to Uploads</button>
+                    <button class="primary-btn" id="startOverBtn" style="background: rgba(255,255,255,0.1); color: white; width: auto;">← Start Over</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Candidate Detail Modal -->
+    <div class="modal hidden" id="candidateModal">
+        <div class="glass-card modal-content modal-large" id="modalCard">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            
+            <div style="display: flex; justify-content: space-between; align-items:flex-start;">
+                <div>
+                    <h2 id="modalName">Candidate Name</h2>
+                    <div class="modal-score" id="modalScore">Match Score: 95%</div>
+                </div>
+                <a href="#" id="modalDownloadBtn" target="_blank" class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 0.85em; display:flex; gap: 5px; align-items:center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Original Resume
+                </a>
+            </div>
+            
+            <div class="modal-section" style="margin-top: 20px;">
+                <h4>Personal Information</h4>
+                <div id="modalPersonalInfo" class="text-sm text-dim"></div>
+            </div>
+            
+            <div class="modal-grid" style="grid-template-columns: 1fr;">
+                <div class="modal-col">
+                    <div class="modal-section">
+                        <h4>AI Reasoning</h4>
+                        <p id="modalReasoning" class="text-sm">...</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>Missing Mandatory Requirements</h4>
+                        <div class="missing-skills" id="modalMissing"></div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h4>Detected Skills / Languages</h4>
+                        <div class="skills-container" id="modalSkills"></div>
+                    </div>
+                </div>
+                
+                <div class="modal-col">
+                    <div class="modal-section" style="overflow-x: auto;">
+                        <h4>Experience</h4>
+                        <div id="modalExperience" class="text-sm"></div>
+                    </div>
+                    <div class="modal-section" style="overflow-x: auto;">
+                        <h4>Education & Projects</h4>
+                        <div id="modalEducation" class="text-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="/script.js?v=3"></script>
+</body>
+</html>
