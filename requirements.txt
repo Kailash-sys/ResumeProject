@@ -5,14 +5,9 @@ sqlalchemy
 psycopg2-binary
 redis
 celery
-langgraph
-langchain
-langchain-community
-langchain-core
-langchain-google-genai
 pdfplumber
 PyMuPDF
 python-docx
-sentence-transformers
-chromadb
 python-multipart
+langchain-core
+langchain-google-genai
